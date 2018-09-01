@@ -15,7 +15,7 @@ class App extends React.Component {
 
   componentDidMount() {
     $.ajax({
-      url: process.env.urlstuff+'/repos',
+      url: '/repos',
       method: 'GET',
       success: (data)=> {
         this.setState({
@@ -28,13 +28,13 @@ class App extends React.Component {
     console.log(`${term} was searched`);
 
     $.ajax({
-      url: process.env.urlstuff+'/repos',
+      url: '/repos',
       method: 'POST' ,
       data: JSON.stringify({name: term}),
       contentType: 'application/json',
       success: (data)=> {
         $.ajax({
-          url: process.env.urlstuff+'/repos',
+          url: '/repos',
           method: 'GET',
           success: (data)=> {
             console.log('DATAAAA', data)
@@ -50,7 +50,7 @@ class App extends React.Component {
   retrieve(){
     console.log('got')
     $.ajax({
-      url: process.env.urlstuff+'/repos',
+      url: '/repos',
       method: 'GET',
       success: (data)=> {
         this.setState({
