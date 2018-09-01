@@ -10,12 +10,23 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-
+    this.retrieve();
   }
 
   search (term) {
     console.log(`${term} was searched`);
     // TODO
+      $.ajax({
+        url: 'http://localhost:1128/repos',
+        method: 'GET'
+      }).done((data)=> {
+        this.setState({
+          repos: data
+        })
+      }).fail((header, err)=> {
+        console.log(err);
+        console.log(header);
+      })
     $.ajax({
       url: 'http://localhost:1128/repos',
       method: 'POST' ,
@@ -27,7 +38,22 @@ class App extends React.Component {
       console.log(err);
       console.log(header);
     })
+
   }
+
+    retrieve(){
+      $.ajax({
+        url: 'http://localhost:1128/repos',
+        method: 'GET'
+      }).done((data)=> {
+        this.setState({
+          repos: data
+        })
+      }).fail((header, err)=> {
+        console.log(err);
+        console.log(header);
+      })
+    }
 
   render () {
     return (<div>

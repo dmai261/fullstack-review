@@ -18,7 +18,7 @@ let save = (data) => {
   // the MongoDB
   for (var i = 0; i < data.length; i++) {
     let repos = new Repo({
-      id: data[i].id, name: data[i].name, url: data[i].url, created_at: new Date() 
+      id: data[i].id, name: data[i].name, url: data[i]["html_url"], created_at: new Date() 
     });
 
     repos.save((err, repo)=>{
@@ -28,4 +28,12 @@ let save = (data) => {
   }
 }
 
+let retrieve = (cb) => {
+  Repo.find((err, thing)=> {
+    if (err) console.error(err);
+    cb(thing);
+  })
+}
+
 module.exports.save = save;
+module.exports.retrieve = retrieve;

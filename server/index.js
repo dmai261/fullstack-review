@@ -1,18 +1,13 @@
-var getReposByUsername =  require('../helpers/github');
+var getRepos =  require('../helpers/github');
 const express = require('express');
 let app = express();
 let bodyParser = require('body-parser')
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json())
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Methods", "GET, PUT, OPTIONS, POST, DELETE");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
+
 app.post('/repos', function (req, res) {
-  getReposByUsername.getReposByUsername(req.body.name);
+  getRepos.getReposByUsername(req.body.name);
   // TODO - your code here!
   // This route should take the github username provided
   // and get the repo information from the github API, then
@@ -23,6 +18,11 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code  here!
   // This route should send back the top 25 repos
+  let cb = (data)=>{
+    res.send(data)
+  }
+  getRepos.getReposFromDb(cb)
+
 });
 
 let port = 1128;
