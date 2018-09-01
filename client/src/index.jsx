@@ -10,56 +10,60 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-    this.retrieve();
   }
 
-  search (term) {
-    console.log(`${term} was searched`);
-    // TODO
-      $.ajax({
-        url: 'http://localhost:1128/repos',
-        method: 'GET'
-      }).done((data)=> {
+  componentDidMount() {
+    $.ajax({
+      url: 'http://localhost:1128/repos',
+      method: 'GET',
+      success: (data)=> {
         this.setState({
           repos: data
         })
-      }).fail((header, err)=> {
-        console.log(err);
-        console.log(header);
-      })
+      }
+    })
+  }
+  search (term) {
+    console.log(`${term} was searched`);
+
     $.ajax({
       url: 'http://localhost:1128/repos',
       method: 'POST' ,
       data: JSON.stringify({name: term}),
-      contentType: 'application/json'
-    }).done(function(data) {
-      console.log(data);
-    }).fail(function(header, err) {
-      console.log(err);
-      console.log(header);
+      contentType: 'application/json',
+      success: (data)=> {
+        $.ajax({
+          url: 'http://localhost:1128/repos',
+          method: 'GET',
+          success: (data)=> {
+            console.log('DATAAAA', data)
+            this.setState({
+              repos: data
+            })
+          }
+        })
+      }
     })
-
   }
 
-    retrieve(){
-      $.ajax({
-        url: 'http://localhost:1128/repos',
-        method: 'GET'
-      }).done((data)=> {
+  retrieve(){
+    console.log('got')
+    $.ajax({
+      url: 'http://localhost:1128/repos',
+      method: 'GET',
+      success: (data)=> {
         this.setState({
           repos: data
         })
-      }).fail((header, err)=> {
-        console.log(err);
-        console.log(header);
-      })
-    }
+      }
+    })
+  }
 
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos}/>
-      <Search onSearch={this.search.bind(this)}/>
+      <Search onSearch={this.search.bind(this)} />
     </div>)
   }
 }

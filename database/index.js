@@ -12,7 +12,7 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (data) => {
+let save = (data, cb) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
@@ -26,10 +26,12 @@ let save = (data) => {
       console.log(repo)
     })
   }
+
+  cb('Data Saved!');
 }
 
 let retrieve = (cb) => {
-  Repo.find((err, thing)=> {
+  Repo.find().sort({'created_at':-1}).limit(25).exec((err, thing)=> {
     if (err) console.error(err);
     cb(thing);
   })
